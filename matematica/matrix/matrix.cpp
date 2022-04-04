@@ -19,6 +19,8 @@ class matrix{
                }    
             return a;
         };
+
+
         std::vector<std::vector<long double>> structure (long int n, long int m){
             std::vector<std::vector<long double>> matrix;
                 for(int i = 0; i < n; i++){
@@ -31,6 +33,8 @@ class matrix{
                 }
             return matrix;
         };
+        
+
         std::vector<std::vector<long double>> multiplication (std::vector<std::vector<long double>>A, std::vector<std::vector<long double>>B){
             std::vector<std::vector<long double>> result; 
             std::vector<long double> result_line;           
@@ -46,10 +50,13 @@ class matrix{
                         result_line.push_back(pruduct);     
                     }
                     result.push_back(result_line);
+                    result_line.clear();
                 }
             return result;
         };
-        void print ( std::vector<std::vector<long double>>a){
+
+
+        void print_matrix ( std::vector<std::vector<long double>>a, std::string l){
         std::vector<int> distance;
         std::string n;
         for (int i=0; i< a.size();i++){
@@ -64,6 +71,12 @@ class matrix{
         
         }
         for (int j=0; j<a.size();j++ ){
+            if (j==(a.size()/2)){
+                std::cout<< l <<"=";
+            }
+            else{
+                std::cout<<"  ";
+            }
             std::cout <<"| ";
             for(int i=0;i<a[0].size();i++){
                 n=std::to_string(a[j][i]);
@@ -106,8 +119,10 @@ int main() {
     std::vector<std::vector<long double>> B = mtx.structure(nB,mB);
     std::vector<std::vector<long double>> C = mtx.multiplication(A,B);
     std::cout << C[0][0]<<'\n';
-    mtx.print (A);
-    mtx.print (B);
-    mtx.print (C);
+    mtx.print_matrix (A,"A");
+    std::cout <<'\n';
+    mtx.print_matrix (B,"B");
+    std::cout <<'\n';
+    mtx.print_matrix (C,"C");
 }
 
