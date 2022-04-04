@@ -46,7 +46,15 @@ class matrix{
         }
 };
 
-
+void print (std::vector<std::vector<long double>> a){
+    for (int j = 0; j < a.size(); j++){     
+        std::cout <<"|";
+        for (int i = 0; i < a[0].size(); i++){
+            std::cout << a[j][i] << " "; 
+        }
+        std::cout <<"|"<< '\n';
+    }
+};
 
 
 int main() {
@@ -60,5 +68,6 @@ int main() {
     std::vector<std::vector<long double>> B = mtx.structure(nB,mB);
     std::vector<std::vector<long double>> C = mtx.multiplication(A,B);
     std::cout << C[0][0]<<'\n';
+    print (A);
 }
 
