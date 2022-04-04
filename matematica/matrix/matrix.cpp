@@ -53,7 +53,7 @@ void print (std::vector<std::vector<long double>> a){
             std::cout << a[j][i] << " "; 
         }
         std::cout <<"|"<< '\n';
-    }
+    };
 };
 
 
