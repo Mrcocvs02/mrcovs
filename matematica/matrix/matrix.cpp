@@ -6,8 +6,57 @@ bool is_even(int n){
     return n % 2 == 0;
 };
 
+bool is_not_empty(std::vector<long double> a){
+    int sum=0;
+    bool k;
+    for (int i=0; i<a.size();i++){
+        sum+=a[i];
+        if (sum!=0){
+            k=true;
+        }
+        else{
+            k=false;
+        }
+    }
+    return k;
+}
+
 class matrix{
     public:
+
+        std::vector<long double> sum (std::vector<long double> a, std::vector  <long double> b){
+            for(int i=0;i<a.size();i++){
+                a[i]+=b[i];
+            }
+            return a;
+        };
+
+
+        std::vector<long double> product (std::vector<long double>a,long double b){
+            for (int i=0; i< a.size(); i++){
+                a[i]*=b;
+            }
+            return a;
+        }
+
+
+
+        std::vector<std::vector<long double>> gauss(std::vector<std::vector<long double>>a){
+            for(int j=0;j< a.size();j++){
+               if(is_not_empty(a[j])){
+                    for(int k=j+1;k< a.size();k++){
+                        long double c = a[k][j]/a[j][j];
+                        a[k]= sum(a[k],product(a[j], (-c)));
+                    }
+                }
+                else {
+                    std::cout<<"the matrix could not be diagonalized"<<'\n';
+                }
+            }  
+            return a;
+        };
+
+
         long double insert_value(void){
             long double a;
             std::cin >>a;
@@ -113,17 +162,20 @@ int main() {
     std::cout<< "Insert the dimension of the first matrix:";
     std::cin >> nA >> mA;
     std::cout<< "Insert the dimension of the second matrix:";
-    std::cin >> nB >> mB;
+   // std::cin >> nB >> mB;
     matrix mtx;
     std::cout<< "Insert the coefficients of the first matrix:";
     std::vector<std::vector<long double>> A = mtx.structure(nA,mA);
     mtx.print_matrix (A,"A");
     std::cout <<'\n';
     std::cout<< "Insert the coefficients of the second matrix:";
-    std::vector<std::vector<long double>> B = mtx.structure(nB,mB);
-    mtx.print_matrix (B,"B");
+  //  std::vector<std::vector<long double>> B = mtx.structure(nB,mB);
+    //mtx.print_matrix (B,"B");
     std::cout <<'\n';
-    std::vector<std::vector<long double>> C = mtx.multiplication(A,B);
-    mtx.print_matrix (C,"A*B");
+ //   std::vector<std::vector<long double>> C = mtx.multiplication(A,B);
+   // mtx.print_matrix (C,"A*B");
+
+    std::vector<std::vector<long double>> D =mtx.gauss(A);
+    mtx.print_matrix(D,"D");
 }
 
