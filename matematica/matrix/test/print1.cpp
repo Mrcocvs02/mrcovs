@@ -11,8 +11,16 @@ bool is_even(int n){
             for (int i=0; i< a[0].size();i++){
                 std::vector<int> temp;
                 for(int j=0; j< a.size();j++){
-                    n=std::to_string(a[j][i]);            
-                    temp.push_back(n.size());        
+
+                        long int c=(a[j][i]*100000);
+                        while (c%10==0){
+                        c=c/10;
+                            }
+
+                    n=std::to_string(c);            
+                    temp.push_back(n.size()+1); 
+
+
                 }
                 std::sort(temp.begin(), temp.end());
                 distance.push_back(temp[temp.size()-1]);
@@ -51,7 +59,7 @@ bool is_even(int n){
         };
 int main(){
     std::vector<std::vector<long double>> A;
-    std::vector <long double> riga{124252,263435,3,3,32,3233,4};
+    std::vector <long double> riga{124.34,23.43,54.6};
     std::vector <long double> riga1{1,3,265,4,1,2,3};
     A.push_back(riga);
     A.push_back(riga1);
