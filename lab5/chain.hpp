@@ -13,7 +13,7 @@ class Hooke{
     public:
         Hooke (double k, double l): m_k {k}, m_l {l} {};
         double operator()(PPState const& p1, PPState const& p2) const{
-            double force = (p2.x-p1.x-m_l)*m_k;
+            double force = (abs(p2.x-p1.x)-m_l)*m_k;
             //std::cout<< force <<'\n';
             return force;
         }
@@ -38,23 +38,25 @@ class Chain {
   void evolve(double delta_t){
       std::vector<PPState> temp = m_ppses;
       for(int i=0;i<size();i++){
-          if (i!=0 && i!=size()-1){
-              double a_i=(m_inter(temp[i-1],m_ppses[i])+m_inter(m_ppses[i],temp[i+1]))/m_ppses[i].m;
-              m_ppses[i].v += a_i*delta_t;  
-              m_ppses[i].x += m_ppses[i].v*delta_t + 0.5*a_i*delta_t*delta_t;  
+          if (i==0){
+            double a_i = m_inter(m_ppses[i],m_ppses[i+1])/m_ppses[i].m;
+              temp[i].v += a_i*delta_t;  
+              temp[i].x += m_ppses[i].v*delta_t + 0.5*a_i*delta_t*delta_t;
           }
-          else if(i==size()-1){
-            double a_i = m_inter(temp[i-1],m_ppses[i])/m_ppses[i].m;
-              m_ppses[i].v += a_i*delta_t;  
-              m_ppses[i].x += m_ppses[i].v*delta_t + 0.5*a_i*delta_t*delta_t;
+          
+          else if(i!=0 && i!=(size()-1)){
+              double a_i = (-m_inter(m_ppses[i-1],m_ppses[i])+m_inter(m_ppses[i],m_ppses[i+1]))/m_ppses[i].m;
+              temp[i].v += a_i*delta_t;  
+              temp[i].x += m_ppses[i].v*delta_t + 0.5*a_i*delta_t*delta_t;  
           }
-          else {
-            double a_i = m_inter(m_ppses[i],temp[i+1])/m_ppses[i].m;
-              m_ppses[i].v += a_i*delta_t;  
-              m_ppses[i].x += m_ppses[i].v*delta_t + 0.5*a_i*delta_t*delta_t;
+          
+          else if (i==size()-1){
+            double a_i = -m_inter(m_ppses[i-1],m_ppses[i])/m_ppses[i].m;
+              temp[i].v += a_i*delta_t;  
+              temp[i].x += m_ppses[i].v*delta_t + 0.5*a_i*delta_t*delta_t;
           }
-
       }
+      m_ppses = temp;
   };
 
   std::vector<PPState> const& state() const{
