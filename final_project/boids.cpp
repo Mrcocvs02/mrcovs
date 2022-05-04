@@ -36,13 +36,16 @@ class flock{
     std::vector <boid> boids;
     void structure (int n){
         for(double i=0;i<n;i++){
-            vettore x{(1.3+2.45*i),(3+i)};
-            vettore v{(2+2*i),(5+3.2*i)};
-            boid c{x,v};
+            vettore position;
+            position.x=2*i+4;
+            position.y=6*i-2;
+            vettore speed;
+            speed.x=10*i-8;
+            speed.y=4*i+2;
+            boid c{position,speed};
             boids.push_back(c);
             std::cout<< "Bird number "<<i+1<<" position "<<'\n';
             c.position.print();
-            boids.push_back(c);
             std::cout<< "Bird number " <<i+1<<" velocity "<<'\n';
             c.velocity.print();
         }
@@ -56,6 +59,8 @@ class flock{
             sum_x = boids[i].position.x + sum_x;
             sum_y = boids[i].position.y + sum_y ; 
         };
+        // std::cout << (sum_x/boids.size())<<" "<<(sum_y/boids.size())<<'\n';
+        // std::cout <<boids.size()<<"  "<<sum_x<<sum_y<<'\n';
         return {(sum_x/boids.size()),(sum_y/boids.size())};
     };
 
@@ -63,10 +68,10 @@ class flock{
         double sum_vx = 0;
         double sum_vy = 0;
         for (int i=0; i< boids.size(); i++){
-            sum_vx = sum_vy + boids[i].velocity.x;
+            sum_vx = sum_vx + boids[i].velocity.x;
             sum_vy = sum_vy + boids[i].velocity.y;
         };
-        std::cout << sum_vx<<" "<<sum_vy<<'\n';
+        //std::cout << sum_vx<<" "<<sum_vy<<'\n';
         return {(sum_vx/boids.size()),(sum_vy/boids.size())}; 
     };
     vettore v_separation_i (boid boid_j, int j){
@@ -81,8 +86,8 @@ class flock{
     };
 
     vettore v_allignement1_i (boid boid_j){
-        //((medium_velocity()-boid_i.velocity)*a).print();
-        //medium_velocity().print();
+        // ((medium_velocity()-boid_i.velocity)*a).print();
+        // medium_velocity().print();
         return {(medium_velocity()-boid_j.velocity)*a};
 
     };
@@ -95,16 +100,24 @@ class flock{
         double i=0;
         while(i<t){
             for (int j=0; j< boids.size();j++){
-                boids[j].velocity = (boids[j].velocity + v_allignement1_i(boids[j]) + v_cohesion_i(boids[j])+ v_separation_i(boids[j], j));
+                // v_allignement1_i(boids[j]).print();
+                // v_cohesion_i(boids[j]).print();
+                // v_separation_i(boids[j],j).print();
+                //std::cout <<"------------"<<'\n';
+                // center_of_mass().print();
+                // (center_of_mass()-boids[j].position).print();
                 boids[j].position = (boids[j].velocity*0.1)+boids[j].position;
-                 
-                 //boids[j].velocity.print();
+                boids[j].velocity = (boids[j].velocity + v_allignement1_i(boids[j]) + v_cohesion_i(boids[j])+ v_separation_i(boids[j], j));
+                std::cout <<"boid " << j+1 <<": "<<'\n';
+                boids[j].position.print();            
+                boids[j].velocity.print();
+
             };
             //std::cout <<"center of mass:";
             //center_of_mass().print();
             //std::cout <<"medium velocity:";
             //medium_velocity().print();
-            i+=0.2;
+            i+=0.1;
         }
     }
 };
